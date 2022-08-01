@@ -5,18 +5,11 @@ const db = new sqlite3.Database("./db/database.db");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const PORT = 8080;
-const admin = require("./routes/admin");
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(
-  session({
-    secret: "wesdfksdf@#$ff",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+
 
 app.use((req, res, next) => {
   let logged = "";
@@ -258,7 +251,6 @@ app.get("/serarchUser", (req, res) => {
       db.all(
         `select * from projects where user = '${req.query.uName}'`,
         (err, projects) => {
-          // res.json({user, projects});
           res.render("guest", { user, projects });
         }
       );
@@ -272,13 +264,11 @@ app.get("/comments/:id", (req, res) => {
     (err, comments) => {
       let id = req.params.id;
       res.render("comments", { comments, id });
-      // res.json(comments)
     }
   );
 });
 
 app.post("/addComment/:id", (req, res) => {
-  // res.send(req.body.comment);
   const { username } = req.cookies;
   if (!username) {
     res.send("<h2>you are not logged <br> pleace <a href='/login'> Login </a></h2>");
