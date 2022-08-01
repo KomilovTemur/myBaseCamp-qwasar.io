@@ -11,7 +11,6 @@
   npm start dev:start
 ```
 
-That is so funny! :joy:
 
 
 ## Running server for review
