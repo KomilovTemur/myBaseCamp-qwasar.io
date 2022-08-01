@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    "
+  >
+    <form
+      action="/editProfile"
+      style="display: flex; flex-direction: column"
+      method="post"
+    >
+      <% rows.forEach(user => { %>
+      <label
+        >Username
+        <input
+          spellcheck="false"
+          min="3"
+          class="form-control mt-2"
+          required
+          type="text"
+          name="username"
+          value="<%= user.username %>"
+        />
+      </label>
+      <label
+        >Email
+        <input
+          spellcheck="false"
+          min="3"
+          class="form-control mt-2"
+          required
+          type="text"
+          name="email"
+          value="<%= user.email %>"
+        />
+      </label>
+      <label
+        >Password
+        <input
+          spellcheck="false"
+          min="3"
+          class="form-control mt-2"
+          required
+          type="text"
+          name="password"
+          value="<%= user.password %>"
+        />
+      </label>
+      <div class="d-flex">
+        <button class="btn ml-2 btn-primary mt-2" type="submit">
+          Update profile
+        </button>
+        <a class="btn w-50 ml-2 btn-warning mt-2" href="/login">Cancel</a>
+      </div>
+      <form action=""></form>
+      <%}); %>
+    </form>
+
+    <script src="/js/app.js"></script>
+    <% rows.forEach(user => { %>
+    <script>
+      let form = document.querySelector("form");
+      let inputs = document.querySelectorAll(".form-control");
+      let arr = [];
+      for (let i = 0; i < inputs.length; i++) {
+        let inputValues = inputs[i].value;
+        arr.push(inputValues);
+        inputs[i].addEventListener("input", () => {
+          let newValue = inputs[i].value;
+          arr[i] = newValue;
+        });
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          let newArr = [
+            "<%= user.username %>",
+            "<%= user.email %>",
+            "<%= user.password %>",
+          ];
+          console.log("case_" + i + " " + (newArr[i] == arr[i]));
+          if (newArr[i] == arr[i]) {
+            // location = "/login";
+          }
+        });
+      }
+    </script>
+    <%}); %>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    "
+  >
+    <form action="/signup" class="w-25" method="po0st">
+      <h2>Sign up</h2>
+      <input
+        class="form-control my-1"
+        type="text"
+        required
+        min="4"
+        name="username"
+        placeholder="Username"
+      />
+      <input
+        type="email"
+        class="form-control my-1"
+        required
+        min="4"
+        name="email"
+        placeholder="Email"
+      />
+      <input
+        class="form-control my-1"
+        type="password"
+        required
+        min="4"
+        name="password"
+        placeholder="password"
+      />
+      <input
+        class="form-control my-1"
+        type="password"
+        required
+        min="4"
+        name="password"
+        placeholder="Retype password"
+      />
+      <div class="text-center">
+        <button class="w-100 my-1 btn btn-primary" type="submit">sign up</button>
+        <a href="/login"class="text-decoration-none" > Already you have account </a>
+      </div>
+    </form>
+  </body>
+</html>

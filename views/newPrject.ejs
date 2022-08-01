@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <style>
+      input {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    "
+  >
+    <nav class="bg-light d-flex align-items-center justify-content-between">
+      <div class="logo">
+        <h2>Logo</h2>
+      </div>
+      <ul
+        class="nav-links m-0 d-flex align-items-center justify-content-between"
+      >
+        <li>
+          <a href="/addPoject">Add project</a>
+        </li>
+        <li>
+          <a href="/editProfile">Edit profile</a>
+        </li>
+        <li>
+          <a href="/logout">Log out</a>
+        </li>
+      </ul>
+    </nav>
+
+    <form
+      action="/addPoject"
+      method="post"
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      "
+    >
+      <h2 class="h2">New Project</h2>
+      <label>
+        Name
+        <input type="text" name="name" class="form-control w-100" required />
+      </label>
+      <label>
+        Description
+        <textarea
+          name="description"
+          cols="50"
+          required
+          rows="5"
+          class="form-control"
+        ></textarea>
+      </label>
+      <button class="btn btn-primary mt-2" type="submit">
+        Add new project
+      </button>
+    </form>
+  </body>
+</html>
