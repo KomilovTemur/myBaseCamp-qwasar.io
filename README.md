@@ -13,7 +13,7 @@
 
 
 
-## Running server for review
+## Run server for review
 ```
   npm start
 ```
