@@ -3,7 +3,7 @@
 
 ## install this project
 ```
-  npm install
+  npm install && npm i nodemon -g
 ```
 
 ## Running server for development
