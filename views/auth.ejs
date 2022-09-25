@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="/css/main.css" />
   </head>
   <body
     style="
@@ -15,7 +15,31 @@
       min-height: 100vh;
     "
   >
-    <form action="/signup" class="w-25" method="post">
+  
+  <% if (action == "login") { %>
+    <form action="/auth/login" method="post">
+      <h3>Login</h3>
+      <input
+        class="form-control"
+        type="text"
+        name="username"
+        placeholder="Username"
+      />
+      <input
+        class="form-control my-2"
+        type="password"
+        name="password"
+        placeholder="password"
+      />
+      <div class="text-center">
+        <button class="btn btn-primary w-100" type="submit">Login</button>
+        <a class="text-decoration-none" href="/auth/signup">
+          You don't have accound! sign up
+        </a>
+      </div>
+    </form>
+    <% } else { %>
+    <form action="/auth/signup" class="w-25" method="post">
       <h2>Sign up</h2>
       <input
         class="form-control my-1"
@@ -50,9 +74,16 @@
         placeholder="Retype password"
       />
       <div class="text-center">
-        <button class="w-100 my-1 btn btn-primary" type="submit">sign up</button>
-        <a href="/login"class="text-decoration-none" > Already you have account </a>
+        <button class="w-100 my-1 btn btn-primary" type="submit">
+          sign up
+        </button>
+        <a href="/auth/login" class="text-decoration-none">
+          Already you have account
+        </a>
       </div>
     </form>
+    <% } %>
+  
+  
   </body>
 </html>

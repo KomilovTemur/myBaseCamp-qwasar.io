@@ -10,6 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// Route file
+const authRouter = require("./routes/auth")
+const projectRouter = require("./routes/project")
+
 
 app.use((req, res, next) => {
   let logged = "";
@@ -31,76 +35,8 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/login", (req, res) => {
-  if (req.cookies.username && req.cookies.username) {
-    res.redirect(`/user/${req.cookies.username}`);
-  } else if (req.cookies.username == "") {
-    res.render("login");
-  } else {
-    res.render("login");
-  }
-});
-
-app.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  if (username == "" && password == "") {
-    res.send("username or password is empty");
-  } else {
-    db.all(
-      `select * from users where username = '${username}'`,
-      (err, rows) => {
-        if (rows.length == 0) {
-          res.send("username or password incorrect");
-        } else {
-          if (username === rows[0].username && password === rows[0].password) {
-            res.cookie("username", `${username}`);
-            res.redirect(`/user/${username}`);
-          } else {
-            res.send("username or password incorrect");
-          }
-        }
-      }
-    );
-  }
-});
-
-app.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
-app.post("/signup", (req, res) => {
-  const { email, password, username } = req.body;
-  if (email == "" && username == "" && password == "") {
-    res.send("all inputs are required");
-  } else {
-    if (password[0] === password[1]) {
-      db.all(
-        `select * from users where username = '${username}'`,
-        (err, usernames) => {
-          if (usernames.length == 0) {
-            db.all(
-              `select * from users where email = '${email}'`,
-              (err, emails) => {
-                if (emails.length == 0) {
-                  db.run(
-                    `insert into users (email, password, username) values ('${email}', '${password[0]}', '${username}')`
-                  );
-                  res.redirect("/login");
-                } else {
-                  res.send("this email already exist");
-                }
-              }
-            );
-          } else {
-            res.send("this username already exist");
-          }
-        }
-      );
-    } else {
-      res.send("password 1  not equal to password 2");
-    }
-  }
-});
+app.use('/auth/', authRouter)
+app.use('/project/', projectRouter)
 
 app.get("/user/:user", (req, res) => {
   const { username } = req.cookies;
@@ -144,11 +80,11 @@ app.get("/admins/:adminName", (req, res) => {
           (err, admins) => {
             const { username } = req.cookies;
             if (admins.length == 0) {
-              res.redirect("/login");
+              res.redirect("/auth/login");
             } else if (admins[0].admin == "false") {
-              res.redirect("/login");
+              res.redirect("/auth/login");
             } else if (req.params.adminName != req.cookies.username) {
-              res.redirect("/login");
+              res.redirect("/auth/login");
             } else {
               res.json({ users, logs, projects });
               console.log(!req.cookies);
@@ -163,7 +99,7 @@ app.get("/admins/:adminName", (req, res) => {
 app.get("/editProfile", (req, res) => {
   const { username } = req.cookies;
   if (!req.cookies.username) {
-    res.redirect("/login");
+    res.redirect("/auth/login");
   } else {
     db.all(
       `select * from users where username = '${username}'`,
@@ -209,39 +145,7 @@ app.post("/editProfile", (req, res) => {
 
 app.get("/logout", (req, res) => {
   res.clearCookie("username");
-  res.redirect("/login");
-});
-
-app.get("/addPoject", (req, res) => {
-  res.render("newPrject");
-});
-
-app.post("/addPoject/", (req, res) => {
-  const { name, description } = req.body;
-  if (name == "" && description == "") {
-    res.send("all inputs are required");
-  } else {
-    db.run(`
-      insert into projects (name, description, user)
-      values ('${name}', '${description}', '${req.cookies.username}')
-    `);
-    res.redirect("/login");
-  }
-});
-
-app.get("/getAllProjects", (req, res) => {
-  db.all("select * from projects", (err, rows) => {
-    res.json(rows);
-  });
-});
-
-app.get("/deleteProject/:delId", (req, res) => {
-  db.run(`DELETE FROM projects where id = ${req.params.delId}`);
-  res.redirect("/login");
-});
-
-app.get("/projectSettings/:id", (req, res) => {
-  res.send(req.params.id);
+  res.redirect("/auth/login");
 });
 
 app.get("/serarchUser", (req, res) => {
@@ -271,7 +175,7 @@ app.get("/comments/:id", (req, res) => {
 app.post("/addComment/:id", (req, res) => {
   const { username } = req.cookies;
   if (!username) {
-    res.send("<h2>you are not logged <br> pleace <a href='/login'> Login </a></h2>");
+    res.send("<h2>you are not logged <br> pleace <a href='/auth/login'> Login </a></h2>");
   } else {
     db.run(
       `insert into comments (user, comment, projectId) values ('${username}', '${req.body.comment}', '${req.params.id}')`
