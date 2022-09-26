@@ -28,6 +28,9 @@ router.get("/getAllProjects", (req, res) => {
 });
 
 router.get("/deleteProject/:delId", (req, res) => {
+  // if () {
+
+  // }
   db.run(`DELETE FROM projects where id = ${req.params.delId}`);
   res.redirect("/auth/login");
 });

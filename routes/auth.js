@@ -1,5 +1,5 @@
-const sqlite3 = require("sqlite3").verbose()
-const db = new sqlite3.Database('db/database.db')
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database("db/database.db");
 // db/database.db
 
 const Router = require("express");
@@ -7,13 +7,25 @@ const router = Router();
 
 router.get("/:action", (req, res) => {
   if (req.params.action == "login") {
-    res.render("auth", { action: "login" });
+    if (req.cookies.username) {
+      res.redirect("/user/" + req.cookies.username);
+    } else {
+      res.render("auth", { action: "login" });
+    }
   } else if (req.params.action == "signup") {
-    res.render("auth", { action: "signup" });
+    if (req.cookies.username) {
+      res.redirect("/user/" + req.cookies.username);
+    } else {
+      res.render("auth", { action: "signup" });
+    }
+  } else if (req.params.action == "logout") {
+    res.clearCookie("username");
+    res.redirect("/auth/login");
   } else {
     res.redirect("/auth/login");
   }
 });
+
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
