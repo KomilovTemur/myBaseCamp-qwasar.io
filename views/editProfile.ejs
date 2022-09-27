@@ -57,43 +57,16 @@
           value="<%= user.password %>"
         />
       </label>
-      <div class="d-flex">
+      <div class="d-flex align-items-center justify-content-between">
         <button class="btn ml-2 btn-primary mt-2" type="submit">
-          Update profile
+          Update
         </button>
-        <a class="btn w-50 ml-2 btn-warning mt-2" href="/login">Cancel</a>
+        <a class="btn ml-2 btn-warning mt-2" href="/login">Cancel</a>
       </div>
       <form action=""></form>
       <%}); %>
     </form>
 
     <script src="/js/app.js"></script>
-    <% rows.forEach(user => { %>
-    <script>
-      let form = document.querySelector("form");
-      let inputs = document.querySelectorAll(".form-control");
-      let arr = [];
-      for (let i = 0; i < inputs.length; i++) {
-        let inputValues = inputs[i].value;
-        arr.push(inputValues);
-        inputs[i].addEventListener("input", () => {
-          let newValue = inputs[i].value;
-          arr[i] = newValue;
-        });
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
-          let newArr = [
-            "<%= user.username %>",
-            "<%= user.email %>",
-            "<%= user.password %>",
-          ];
-          console.log("case_" + i + " " + (newArr[i] == arr[i]));
-          if (newArr[i] == arr[i]) {
-            // location = "/login";
-          }
-        });
-      }
-    </script>
-    <%}); %>
   </body>
 </html>

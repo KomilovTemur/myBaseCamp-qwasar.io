@@ -1,8 +1,7 @@
-const sqlite3 = require("sqlite3").verbose()
-const db = new sqlite3.Database('db/database.db')
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database("db/database.db");
 const Router = require("express");
 const router = Router();
-
 
 router.get("/addPoject/", (req, res) => {
   res.render("newProject");
@@ -28,16 +27,19 @@ router.get("/getAllProjects", (req, res) => {
 });
 
 router.get("/deleteProject/:delId", (req, res) => {
-  // if () {
-
-  // }
-  db.run(`DELETE FROM projects where id = ${req.params.delId}`);
-  res.redirect("/auth/login");
+  db.all(
+    `select * from projects where id = ${req.params.delId}`,
+    (err, rows) => {
+      rows[0].user == req.cookies.username
+        ? (db.run(`DELETE FROM projects where id = ${req.params.delId}`),
+          res.redirect("/auth/login"))
+        : res.send("You can't delete this project!");
+    }
+  );
 });
 
 router.get("/projectSettings/:id", (req, res) => {
   res.send(req.params.id);
 });
-
 
 module.exports = router;
