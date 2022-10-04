@@ -28,17 +28,25 @@
               name="uName"
               class="mx-2 form-control"
             />
-            <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="btn btn-primary">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
           </form>
         </li>
         <li>
-          <a class="btn btn-success text-light" href="/project/addPoject"><i class="fa-solid px-2 fa-circle-plus"></i>Add project</a>
+          <a class="btn btn-success text-light" href="/project/addPoject"
+            ><i class="fa-solid px-2 fa-circle-plus"></i>Add project</a
+          >
         </li>
         <li>
-          <a class="btn btn-dark text-light" href="/editProfile"><i class="fa-solid fa-user-pen px-2"></i>Edit profile</a>
+          <a class="btn btn-dark text-light" href="/editProfile"
+            ><i class="fa-solid fa-user-pen px-2"></i>Edit profile</a
+          >
         </li>
         <li>
-          <a class="btn btn-danger text-light" href="/auth/logout">Log Out<i class="fa-solid fa-arrow-right-from-bracket px-2"></i></a>
+          <a class="btn btn-danger text-light" href="/auth/logout"
+            >Log Out<i class="fa-solid fa-arrow-right-from-bracket px-2"></i
+          ></a>
         </li>
       </ul>
     </nav>
@@ -47,18 +55,19 @@
       <div class="row">
         <h2 class="text-center mt-5">Projects</h2>
         <div class="col-md-4">
-          <a href="/project/allProjects" class="btn btn-outline-secondary w-100">
+          <a
+            href="/project/allProjects"
+            class="btn btn-outline-secondary w-100"
+          >
             All Projects
           </a>
         </div>
         <div class="col-md-4">
-          <a href="#" class="btn btn-secondary w-100 ">
-            Created by me
-          </a>
+          <a href="#" class="btn btn-secondary w-100"> Created by me </a>
         </div>
         <div class="col-md-4">
           <a href="#" class="btn btn-outline-secondary w-100">
-            Shared with me 
+            Shared with me
           </a>
         </div>
         <% projects.forEach(project => { %> <% rows.forEach(user => { %>
@@ -68,14 +77,13 @@
               <div class="d-flex align-items-center justify-content-between">
                 <%= project.name %>
                 <a
-                class="text-decoration-none text-light"
-                href="/project/projectSettings/<%= project.id %>"
-                ><i class="fa-solid fa-gear"></i></a
-                >
+                  class="text-decoration-none text-light"
+                  href="/project/projectSettings/<%= project.id %>"
+                  ><i class="fa-solid fa-gear"></i
+                ></a>
               </div>
               <i class="fa-solid fa-pen"></i>
               <%= user.email %>
-              
             </div>
             <div class="card-body">
               <p><%= project.description %></p>
@@ -84,16 +92,27 @@
               class="card-footer d-flex align-items-center justify-content-between"
             >
               <a class="btn btn-warning" href="/comments/<%= project.id %>"
-                ><i class="fa-solid fa-comment"></i></a
-              >
-              <a class="btn btn-danger" href="/project/deleteProject/<%= project.id %>"
-                ><i class="fa-solid fa-trash"></i></a
-              >
+                ><i class="fa-solid fa-comment"></i
+              ></a>
+              <a
+                class="btn btn-danger delete"
+                href="/project/deleteProject/<%= project.id %>"
+                ><i class="fa-solid fa-trash"></i
+              ></a>
             </div>
           </div>
         </div>
         <%}); %> <%}); %>
       </div>
     </div>
+
+    <script>
+      let deleteButton = document.querySelectorAll(".delete");
+      for (let i = 0; i < deleteButton.length; i++) {
+        deleteButton[i].addEventListener("click", (e) => {
+          confirm("are you delete this project!") ? false : e.preventDefault();
+        });
+      }
+    </script>
   </body>
 </html>

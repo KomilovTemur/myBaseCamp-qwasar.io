@@ -26,7 +26,6 @@ router.get("/:action", (req, res) => {
   }
 });
 
-
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
   if (username == "" && password == "") {
@@ -67,7 +66,7 @@ router.post("/signup", (req, res) => {
                   db.run(
                     `insert into users (email, password, username) values ('${email}', '${password[0]}', '${username}')`
                   );
-                  res.redirect("/login");
+                  res.redirect("/auth/login");
                 } else {
                   res.send("this email already exist");
                 }
