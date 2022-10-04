@@ -10,7 +10,7 @@
   <body>
     <nav class="bg-light d-flex align-items-center justify-content-between">
       <div class="logo">
-        <h2>Hello <%= rows[0].username %></h2>
+        <h2>Hello</h2>
       </div>
       <ul
         class="nav-links m-0 d-flex align-items-center justify-content-between"
@@ -47,12 +47,12 @@
       <div class="row">
         <h2 class="text-center mt-5">Projects</h2>
         <div class="col-md-4">
-          <a href="/project/allProjects" class="btn btn-outline-secondary w-100">
+          <a href="/project/allProjects" class="btn btn-secondary w-100">
             All Projects
           </a>
         </div>
         <div class="col-md-4">
-          <a href="#" class="btn btn-secondary w-100 ">
+          <a href="/auth/login" class="btn btn-outline-secondary w-100 ">
             Created by me
           </a>
         </div>
@@ -61,7 +61,7 @@
             Shared with me 
           </a>
         </div>
-        <% projects.forEach(project => { %> <% rows.forEach(user => { %>
+        <% projects.forEach(project => { %> 
         <div class="col-lg-3 col-md-4 col-sm-6">
           <div class="card my-1">
             <div class="cart-header rounded p-2 bg-dark text-light">
@@ -74,7 +74,7 @@
                 >
               </div>
               <i class="fa-solid fa-pen"></i>
-              <%= user.email %>
+              <%= project.user %>
               
             </div>
             <div class="card-body">
@@ -92,7 +92,7 @@
             </div>
           </div>
         </div>
-        <%}); %> <%}); %>
+        <%}); %> 
       </div>
     </div>
   </body>

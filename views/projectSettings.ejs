@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Project Settings</h2>
+      <% data.map(data => { %>
+      <form action="/project/updateProject" method="post" class="d-flex w-50 flex-column">
+        <label>
+          Name
+          <input type="text" hidden name="id" value="<%= data.id %>" id="">
+          <input
+            class="form-control mb-2"
+            type="text"
+            value="<%= data.name %>"
+            name="name"
+            id=""
+          />
+        </label>
+        <label>
+          description
+          <input
+            class="form-control mb-2"
+            type="text"
+            value="<%= data.description %>"
+            name="description"
+            id=""
+          />
+        </label>
+        <button class="btn btn-success mb-2" type="submit">Update</button>
+        <a href="/auth/login" class="btn btn-secondary mb-2">Cancel</a>
+        <a href="/project/deleteProject/<%= data.id %>" class="btn btn-danger">Delete Project</a>
+      </form>
+      <% }) %>
+    </div>
+    <script></script>
+  </body>
+</html>

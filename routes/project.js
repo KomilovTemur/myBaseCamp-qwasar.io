@@ -39,7 +39,44 @@ router.get("/deleteProject/:delId", (req, res) => {
 });
 
 router.get("/projectSettings/:id", (req, res) => {
-  res.send(req.params.id);
+  // res.send(req.params.id);
+  const { username } = req.cookies;
+  username
+    ? db.all(
+        `select * from users where username = '${username}'`,
+        (err, rows) => {
+          if (rows[0].username === username) {
+            db.all(
+              `select * from projects where id = ${req.params.id}`,
+              (err, data) => {
+                res.render("projectSettings", { data });
+              }
+            );
+          } else {
+            res.send("You can't access this project settings");
+          }
+        }
+      )
+    : res.redirect("/auth/login");
+});
+
+router.get("/allProjects", (req, res) => {
+  db.all(`select * from users`, (err, rows) => {
+    db.all(`select * from projects`, (err, projects) => {
+      res.render("allProjects", { rows, projects });
+    });
+  });
+});
+
+router.post("/updateProject", (req, res) => {
+  db.run(`UPDATE projects
+  SET name = '${req.body.name}', description = '${req.body.description}'
+  WHERE id = ${req.body.id}`, err => {
+    if (err) {
+      console.log(err);
+    }
+    res.redirect('/auth/login')
+  })
 });
 
 module.exports = router;
