@@ -77,28 +77,25 @@ router.get("/allProjects", (req, res) => {
 });
 
 router.get("/projectOverview/:id", (req, res) => {
-  db.all(`select * from projects`, (err, projects) => {
-    res.render("projectOverview", { projects });
-  });
+  db.all(
+    `select * from projects where id = ${req.params.id}`,
+    (err, projects) => {
+      if (err) {
+        console.log(err);
+      }
+      res.render("projectOverview", { projects });
+    }
+  );
 });
 
 router.post("/addMember", (req, res) => {
-  db.all(
-    `select * from member where username = '${req.body.username}'`,
-    (err, members) => {
-      if (members.length === 0) {
-        db.run(
-          `insert into member (projectId, username) values ('${req.body.projectId}', '${req.body.username}')`,
-          (err) => {
-            if (err) {
-              console.log(err);
-            }
-            res.redirect(`/project/projectSettings/${req.body.projectId}`);
-          }
-        );
-      } else {
-        res.send("This member already added");
+  db.run(
+    `insert into member (projectId, username) values ('${req.body.projectId}', '${req.body.username}')`,
+    (err) => {
+      if (err) {
+        console.log(err);
       }
+      res.redirect(`/project/projectSettings/${req.body.projectId}`);
     }
   );
 });

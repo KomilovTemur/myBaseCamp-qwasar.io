@@ -62,6 +62,7 @@
           <form action="/project/addMember" method="post" class="mt-3">
             <input type="text" name="projectId" hidden value="<%= data.id %>" />
             <input
+              required
               type="text"
               name="username"
               placeholder="Add Member (username)"
