@@ -46,10 +46,18 @@ router.get("/projectSettings/:id", (req, res) => {
         `select * from users where username = '${username}'`,
         (err, rows) => {
           if (rows[0].username === username) {
+            let members = "";
+            db.all(
+              `select * from member where projectId = '${req.params.id}'`,
+              (err, rows) => {
+                members = rows;
+              }
+            );
             db.all(
               `select * from projects where id = ${req.params.id}`,
               (err, data) => {
-                res.render("projectSettings", { data });
+                res.render("projectSettings", { data, members });
+                // res.json({ data, members });
               }
             );
           } else {
@@ -68,15 +76,45 @@ router.get("/allProjects", (req, res) => {
   });
 });
 
-router.post("/updateProject", (req, res) => {
-  db.run(`UPDATE projects
-  SET name = '${req.body.name}', description = '${req.body.description}'
-  WHERE id = ${req.body.id}`, err => {
-    if (err) {
-      console.log(err);
+router.get("/projectOverview/:id", (req, res) => {
+  db.all(`select * from projects`, (err, projects) => {
+    res.render("projectOverview", { projects });
+  });
+});
+
+router.post("/addMember", (req, res) => {
+  db.all(
+    `select * from member where username = '${req.body.username}'`,
+    (err, members) => {
+      if (members.length === 0) {
+        db.run(
+          `insert into member (projectId, username) values ('${req.body.projectId}', '${req.body.username}')`,
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
+            res.redirect(`/project/projectSettings/${req.body.projectId}`);
+          }
+        );
+      } else {
+        res.send("This member already added");
+      }
     }
-    res.redirect('/auth/login')
-  })
+  );
+});
+
+router.post("/updateProject", (req, res) => {
+  db.run(
+    `UPDATE projects
+  SET name = '${req.body.name}', description = '${req.body.description}'
+  WHERE id = ${req.body.id}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+      res.redirect("/auth/login");
+    }
+  );
 });
 
 module.exports = router;
