@@ -2,6 +2,8 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("db/database.db");
 const Router = require("express");
 const router = Router();
+const multer = require("multer");
+const upload = multer({ dest: "public/uploads/images/" });
 
 router.get("/addPoject/", (req, res) => {
   res.render("newProject");
@@ -78,15 +80,28 @@ router.get("/allProjects", (req, res) => {
 });
 
 router.get("/projectOverview/:id", (req, res) => {
-  db.all(
-    `select * from projects where id = ${req.params.id}`,
-    (err, projects) => {
-      if (err) {
-        console.log(err);
-      }
-      res.render("projectOverview", { projects });
-    }
-  );
+  const { id } = req.params;
+  db.all(`select * from projects where id = ${id}`, (err, projects) => {
+    db.all(`select * from member where projectId = ${id}`, (err, members) => {
+      db.all(`select * from topics where projectId = ${id}`, (err, topics) => {
+        db.all(`select * from tasks where projectId = ${id}`, (err, tasks) => {
+          db.all(
+            `select * from attachments where projectId = ${id}`,
+            (err, attachments) => {
+              res.render("projectOverview", {
+                projects,
+                members,
+                topics,
+                tasks,
+                attachments,
+              });
+              
+            }
+          );
+        });
+      });
+    });
+  });
 });
 
 router.post("/addMember", (req, res) => {
@@ -99,6 +114,47 @@ router.post("/addMember", (req, res) => {
       res.redirect(`/project/projectSettings/${req.body.projectId}`);
     }
   );
+});
+
+router.post("/overView/:action/:id", (req, res) => {
+  switch (req.params.action) {
+    case "addTopic":
+      db.run(
+        `insert into topics (username, projectId, topic) 
+        values ('${req.cookies.username}', '${req.params.id}', '${req.body.topic}')`,
+        (err) => {
+          if (err) {
+            console.log(err);
+          }
+          res.redirect(`/project/projectOverview/${req.params.id}`);
+          // res.json(req.body)
+        }
+      );
+      break;
+    case "addTask":
+      db.run(
+        `insert into tasks (username, projectId, task) 
+          values ('${req.cookies.username}', '${req.params.id}', '${req.body.task}')`,
+        (err) => {
+          if (err) {
+            console.log(err);
+          }
+          res.redirect(`/project/projectOverview/${req.params.id}`);
+        }
+      );
+      break;
+
+    default:
+      res.redirect(`/project/projectOverview/${req.params.id}`);
+      break;
+  }
+});
+
+router.post("/addAttachment/:id", upload.single("file"), (req, res) => {
+  db.run(
+    `insert into attachments (username, projectId, file) values ('${req.cookies.username}', '${req.params.id}', '${req.file.filename}')`
+  );
+  res.redirect(`/project/projectOverview/${req.params.id}`);
 });
 
 router.post("/updateProject", (req, res) => {
