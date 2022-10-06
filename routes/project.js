@@ -69,9 +69,10 @@ router.get("/projectSettings/:id", (req, res) => {
 });
 
 router.get("/allProjects", (req, res) => {
+  const { username } = req.cookies;
   db.all(`select * from users`, (err, rows) => {
-    db.all(`select * from projects`, (err, projects) => {
-      res.render("allProjects", { rows, projects });
+    db.all(`select * from projects order by id desc`, (err, projects) => {
+      res.render("allProjects", { rows, projects, username });
     });
   });
 });
