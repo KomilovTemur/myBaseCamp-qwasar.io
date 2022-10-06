@@ -74,23 +74,25 @@
           <div class="card my-1">
             <div class="cart-header rounded p-2 bg-dark text-light">
               <div class="d-flex align-items-center justify-content-between">
-                <%= project.name %>
-                <% if (project.user === username) { %>
-                  <a
-                    class="text-decoration-none text-light"
-                    href="/project/projectSettings/<%= project.id %>"
-                    ><i class="fa-solid fa-gear"></i
-                  ></a>
-                  <% } else { %>
-                    <a
-                    class="text-decoration-none text-light"
-                    href="/user/<%= project.user %>"
-                    ><i class="fa-solid fa-eye"></i
-                  ></a>
-                    <% } %>
+                <%= project.name %> <% if (project.user === username) { %>
+                <a
+                  class="text-decoration-none text-light"
+                  href="/project/projectSettings/<%= project.id %>"
+                  ><i class="fa-solid fa-gear"></i
+                ></a>
+                <% } else { %>
+                <a
+                  class="text-decoration-none text-light"
+                  href="/user/<%= project.user %>"
+                  ><i class="fa-solid fa-eye"></i
+                ></a>
+                <% } %>
               </div>
+              <% if (project.user === username) { %>
               <i class="fa-solid fa-pen"></i>
-              <%= project.user %>
+              <%= project.user %> <% } else { %>
+              <i class="fa-solid fa-pen"></i>
+              <%= project.user %> <% } %>
             </div>
             <div class="card-body">
               <p><%= project.description %></p>
@@ -99,20 +101,21 @@
               class="card-footer d-flex align-items-center justify-content-between"
             >
               <% if (project.user === username) { %>
-                <a class="btn btn-warning" href="/comments/<%= project.id %>"
-                  ><i class="fa-solid fa-comment"></i
-                ></a>
-                <a
-                  class="btn btn-danger"
-                  href="/project/deleteProject/<%= project.id %>"
-                  ><i class="fa-solid fa-trash"></i
-                ></a>
+              <a class="btn btn-warning" href="/comments/<%= project.id %>"
+                ><i class="fa-solid fa-comment"></i
+              ></a>
+              <a
+                class="btn btn-danger"
+                href="/project/deleteProject/<%= project.id %>"
+                ><i class="fa-solid fa-trash"></i
+              ></a>
               <% } else { %>
-                <a class="btn btn-warning w-100" href="/comments/<%= project.id %>"
-                  ><i class="fa-solid fa-comment me-2"></i
-                >Comments</a>
+              <a
+                class="btn btn-warning w-100"
+                href="/comments/<%= project.id %>"
+                ><i class="fa-solid fa-comment me-2"></i>Comments</a
+              >
               <% } %>
-              
             </div>
           </div>
         </div>
