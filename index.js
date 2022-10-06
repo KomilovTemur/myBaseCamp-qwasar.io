@@ -43,4 +43,4 @@ app.use("/user/", userRouter);
 
 
 
-app.listen(PORT, console.log(`http://localhost:${PORT}`));
+app.listen( process.env.PORT || PORT, console.log(`http://localhost:${PORT}`));
